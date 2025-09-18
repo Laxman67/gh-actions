@@ -22,9 +22,20 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Runs a single command using the runners shell
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v5.0.0
-      - name: Verify Installation
-        run: node --version
+    - name: Setup Node.js
+      uses: actions/setup-node@v5.0.0
+  
+    - name: Verify Node.js Installation
+      run: node --version
+  
+    - name: Create Express App Structure
+      run: |
+        mkdir express-app
+        cd express-app
+        echo "console.log('Hello from Express App');" > index.js
+        cat index.js
+        
+
+        
+              
 
