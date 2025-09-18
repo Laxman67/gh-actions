@@ -1,41 +1,37 @@
-# This is a basic workflow to help you get started with Actions
+name: Setup Basic Express App
 
-name: Nodejs setup express
+on: [push,workflow_dispatch]
 
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-    
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  installation:
-    # The type of runner that the job will run on
+  build:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Setup Node.js
-      uses: actions/setup-node@v5.0.0
-  
-    - name: Verify Node.js Installation
-      run: node --version
-  
-    - name: Create Express App Structure
-      run: |
-        mkdir express-app
-        cd express-app
-        echo "console.log('Hello from Express App');" > index.js
-        cat index.js
-        
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-        
-              
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
 
+      - name: Create Express App
+        run: |
+          mkdir express-app
+          cd express-app
+          npm init -y
+          npm install express
+          cat <<EOF > index.js
+          const express = require('express');
+          const app = express();
+          const PORT = process.env.PORT || 3000;
+
+          app.get('/', (req, res) => res.send('Hello World'));
+
+          app.listen(PORT, () => {
+            console.log(\`Server running on port \${PORT}\`);
+          });
+          EOF
+
+      - name: List Files
+        run: ls -la express-app
