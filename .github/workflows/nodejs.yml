@@ -16,13 +16,15 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  installation:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Runs a single command using the runners shell
-      - name: List down nodejs version
-        run: node --v
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v5.0.0
+      - name: Verify Installation
+        run: node --version
 
